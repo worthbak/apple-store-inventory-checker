@@ -1,0 +1,15 @@
+{
+  "name": "l",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "worth baker",
+  "license": "ISC",
+  "dependencies": {
+    "node-notifier": "^10.0.0",
+    "request": "^2.88.2"
+  }
+}
