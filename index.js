@@ -1,11 +1,21 @@
 const request = require('request');
 const notifier = require('node-notifier');
 
+const args = process.argv.slice(2);
 const favorites = ['MMQX3LL/A', 'MKH53LL/A', 'MK1A3LL/A', 'MK1H3LL/A'];
 const control = 'MYD92LL/A';
-const storeNumber = 'R172';
 const timeZone = 'America/Denver';
-const state = 'CO';
+let storeNumber = 'R172';
+let state = 'CO';
+
+if (args.length > 0) {
+	const passedStore = args[0];
+	if (passedStore.charAt(0) === 'R') {
+		// All retail store numbers start with R
+		storeNumber = passedStore;
+		state = null;
+	}
+}
 
 const skus = {
   'MKGR3LL/A': '14" Si, Base',
