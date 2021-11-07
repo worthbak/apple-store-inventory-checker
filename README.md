@@ -7,7 +7,7 @@ Run `npm install` to load the project's dependencies. Assumes recent `node` vers
 * `node-notifier` for sending local notifications when stock is detected
 
 ### Running the script
-First, find the store number of your local Apple Store using [the included table](./apple-store-numbers.md). Then run the script, passing that value as an argument:
+First, find the store number of your local Apple Store using [the included table](./apple-store-numbers.md) ([see here for Canadian stores](./apple-store-numbers-canada.md)). Then run the script, passing the number as an argument:
 
 ```sh
 $ node index.js R123
