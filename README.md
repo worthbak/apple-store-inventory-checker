@@ -4,7 +4,7 @@ Checks Apple Store inventory for new MacBook Pro models.
 ### Installation 
 Run `npm install` to load the project's dependencies. Assumes recent `node` version (tested with `v17.0.1`, but should work with earlier versions).
 * `request` for simplifying network requests
-* `node-notifier` for sending local notifications when stock is detected). 
+* `node-notifier` for sending local notifications when stock is detected. 
 
 ### Running the script
 First, find the nearest Apple Store number using [the included table](./apple-store-numbers.md). Then run the script, passing the number as an argument:
