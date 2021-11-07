@@ -16,7 +16,7 @@ $ node index.js R123
 This will query Apple's retail inventory for all 2021 MacBook Pro variants that are known to be stocked in-store. `R123` is a store in Nashvile, TN, so that store plus others in the surrouding area will be queried. The results are logged to `stdout`, and if any models are found, a notification will be sent. 
 
 ### Polling in the background
-You might want this script to run every minute or so, to make sure you don't miss your desired model coming into stock. To run the script repeatedly, add the following line to your `crontab`. You will need to update the entry to point to the script directory on your local, the desired log output file, and your node location (use `which node`).
+You might want this script to run every minute or so, to make sure you don't miss your desired model coming into stock. To run the script repeatedly, update the following line to match your local environment and add it to `crontab`. You will need to update the entry to point to the script directory on your local, your node location (use `which node`), and the desired log output file.
 ```sh
 */1 * * * * cd ~/path/to/script/folder/ && /usr/local/bin/node index.js R123 > ~/path/to/desired/log/script_output.log 2>&1
 ```
