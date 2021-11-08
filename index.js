@@ -30,8 +30,8 @@ const skus = {
   'MK193LL/A': '16" SG, Better',
   'MK1H3LL/A': '16" Si, Best',
   'MK1A3LL/A': '16" SG, Best',
-  'MK1A3LL/A': '16" SG, Ultimate',
-  'MK1H3LL/A': '16" Si, Ultimate',
+  'MK233LL/A': '16" SG, Ultimate',
+  'MMQW3LL/A': '16" Si, Ultimate',
   'MYD92LL/A': '13" Control',
 };
 
