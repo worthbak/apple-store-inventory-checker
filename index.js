@@ -1,48 +1,34 @@
-const request = require('request');
-const notifier = require('node-notifier');
+const request = require("request");
+const notifier = require("node-notifier");
 
+const { SKUS, COUNTRIES } = require("./constants");
 const args = process.argv.slice(2);
-const favorites = ['MMQX3LL/A', 'MKH53LL/A', 'MK1A3LL/A', 'MK1H3LL/A'];
-const control = 'MYD92LL/A';
-const timeZone = 'America/Denver';
-let storeNumber = 'R172';
-let state = 'CO';
+const favorites = ["MMQX3LL/A", "MKH53LL/A", "MK1A3LL/A", "MK1H3LL/A"];
+const control = "MYD92LL/A";
+const timeZone = "America/Denver";
+let storeNumber = "R172";
+let state = "CO";
+let countryCode = "";
 
 if (args.length > 0) {
-	const passedStore = args[0];
-	if (passedStore.charAt(0) === 'R') {
-		// All retail store numbers start with R
-		storeNumber = passedStore;
-		state = null;
-	}
+  const passedStore = args[0];
+  const passedCountry = args[1] ?? "US";
+  if (passedStore.charAt(0) === "R") {
+    // All retail store numbers start with R
+    storeNumber = passedStore;
+    state = null;
+  }
+  countryCode = COUNTRIES[passedCountry];
 }
 
-const skus = {
-  'MKGR3LL/A': '14" Si, Base',
-  'MKGP3LL/A': '14" SG, Base',
-  'MKGT3LL/A': '14" Si, Better',
-  'MKGQ3LL/A': '14" SG, Better',
-  'MMQX3LL/A': '14" Si, Ultimate',
-  'MKH53LL/A': '14" SG, Ultimate',
-  'MK1E3LL/A': '16" Si, Base',
-  'MK183LL/A': '16" SG, Base',
-  'MK1F3LL/A': '16" Si, Better',
-  'MK193LL/A': '16" SG, Better',
-  'MK1H3LL/A': '16" Si, Best',
-  'MK1A3LL/A': '16" SG, Best',
-  'MK233LL/A': '16" SG, Ultimate',
-  'MMQW3LL/A': '16" Si, Ultimate',
-  'MYD92LL/A': '13" Control',
-};
-
 const query =
-  Object.keys(skus)
+  Object.keys(SKUS)
     .map((k, i) => `parts.${i}=${encodeURIComponent(k)}`)
-    .join('&') + `&searchNearby=true&store=${storeNumber}`;
+    .join("&") + `&searchNearby=true&store=${storeNumber}`;
 
-var options = {
-  method: 'GET',
-  url: 'https://www.apple.com/shop/fulfillment-messages?' + query,
+let options = {
+  method: "GET",
+  url: `https://www.apple.com${countryCode}/shop/fulfillment-messages?` + query,
 };
 
 request(options, function (error, response) {
@@ -60,17 +46,17 @@ request(options, function (error, response) {
       const name = store.storeName;
       let productStatus = [];
 
-      for (const [key, value] of Object.entries(skus)) {
+      for (const [key, value] of Object.entries(SKUS)) {
         const product = store.partsAvailability[key];
 
         hasStoreSearchError = product.storeSearchEnabled !== true;
 
         if (key === control && hasStoreSearchError !== true) {
-          hasStoreSearchError = product.pickupDisplay !== 'available';
+          hasStoreSearchError = product.pickupDisplay !== "available";
         } else {
           productStatus.push(`${value}: ${product.pickupDisplay}`);
 
-          if (product.pickupDisplay !== 'unavailable') {
+          if (product.pickupDisplay !== "unavailable") {
             console.log(`${value} in stock at ${store.storeName}`);
             let count = skuCounter[key] ?? 0;
             count += 1;
@@ -89,29 +75,33 @@ request(options, function (error, response) {
   let hasError = hasStoreSearchError;
 
   const inventory = Object.entries(skuCounter)
-    .map(([key, value]) => `${skus[key]}: ${value}`)
-    .join(' | ');
+    .map(([key, value]) => `${SKUS[key]}: ${value}`)
+    .join(" | ");
 
   console.log(inventory);
 
-  let hasUltimate = Object.keys(skuCounter).some((r) => favorites.indexOf(r) >= 0);
+  let hasUltimate = Object.keys(skuCounter).some(
+    (r) => favorites.indexOf(r) >= 0
+  );
   let notificationMessage;
 
   if (inventory) {
-    notificationMessage = `${hasUltimate ? 'FOUND ULTIMATE! ' : ''}Some models found: ${inventory}`;
+    notificationMessage = `${
+      hasUltimate ? "FOUND ULTIMATE! " : ""
+    }Some models found: ${inventory}`;
   } else {
     console.log(statusArray);
-    notificationMessage = 'No models found.';
+    notificationMessage = "No models found.";
   }
 
-  const message = hasError ? 'Possible error?' : notificationMessage;
+  const message = hasError ? "Possible error?" : notificationMessage;
   notifier.notify({
-    title: 'MacBook Pro Availability',
+    title: "MacBook Pro Availability",
     message: message,
     sound: hasError || inventory,
     timeout: false,
   });
 
   // Log time at end
-  console.log(new Date().toLocaleString('en-US', { timeZone }));
+  console.log(new Date().toLocaleString("en-US", { timeZone }));
 });
