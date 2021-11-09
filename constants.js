@@ -36,7 +36,7 @@ const SKUS_AUSTRALIA = {
 const COUNTRIES = {
   US: "",
   CA: "/ca",
-  AU: "/au", // Issue with fetching australian stock
+  AU: "/au",
 };
 
 module.exports = {

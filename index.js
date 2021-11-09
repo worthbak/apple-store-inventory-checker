@@ -3,9 +3,13 @@ const notifier = require("node-notifier");
 
 const { SKUS, SKUS_AUSTRALIA, COUNTRIES } = require("./constants");
 const args = process.argv.slice(2);
+
 let favorites = ["MMQX3LL/A", "MKH53LL/A", "MK1A3LL/A", "MK1H3LL/A"];
+// Australia uses different SKUs, if passing in AU as the country code,
+// this favorites list will be used instead of the default
+let favoritesAustralia = ["MMQX3X/A","MKH53X/A","MMQW3X/A","MK233X/A"];
+
 const control = "MYD92LL/A";
-const timeZone = "America/Denver";
 let storeNumber = "R172";
 let state = "CO";
 let countryCode = "";
@@ -22,7 +26,7 @@ if (args.length > 0) {
   countryCode = COUNTRIES[passedCountry];
   if (countryCode === "/au") {
     skuList = SKUS_AUSTRALIA;
-    favorites = ["MMQX3X/A","MKH53X/A","MMQW3X","MK233X"];
+    favorites = favoritesAustralia;
   }
 }
 
