@@ -1,14 +1,19 @@
 const request = require("request");
 const notifier = require("node-notifier");
 
-const { SKUS, COUNTRIES } = require("./constants");
+const { SKUS, SKUS_AUSTRALIA, COUNTRIES } = require("./constants");
 const args = process.argv.slice(2);
-const favorites = ["MMQX3LL/A", "MKH53LL/A", "MK1A3LL/A", "MK1H3LL/A"];
+
+let favorites = ["MMQX3LL/A", "MKH53LL/A", "MK1A3LL/A", "MK1H3LL/A"];
+// Australia uses different SKUs, if passing in AU as the country code,
+// this favorites list will be used instead of the default
+let favoritesAustralia = ["MMQX3X/A","MKH53X/A","MMQW3X/A","MK233X/A"];
+
 const control = "MYD92LL/A";
-const timeZone = "America/Denver";
 let storeNumber = "R172";
 let state = "CO";
 let countryCode = "";
+let skuList = SKUS;
 
 if (args.length > 0) {
   const passedStore = args[0];
@@ -19,10 +24,14 @@ if (args.length > 0) {
     state = null;
   }
   countryCode = COUNTRIES[passedCountry];
+  if (countryCode === "/au") {
+    skuList = SKUS_AUSTRALIA;
+    favorites = favoritesAustralia;
+  }
 }
 
 const query =
-  Object.keys(SKUS)
+  Object.keys(skuList)
     .map((k, i) => `parts.${i}=${encodeURIComponent(k)}`)
     .join("&") + `&searchNearby=true&store=${storeNumber}`;
 
@@ -39,6 +48,8 @@ request(options, function (error, response) {
   let skuCounter = {};
   let hasStoreSearchError = false;
 
+  console.log('Inventory');
+  console.log('---------');
   const statusArray = storesArray
     .flatMap((store) => {
       if (state && state !== store.state) return null;
@@ -46,7 +57,7 @@ request(options, function (error, response) {
       const name = store.storeName;
       let productStatus = [];
 
-      for (const [key, value] of Object.entries(SKUS)) {
+      for (const [key, value] of Object.entries(skuList)) {
         const product = store.partsAvailability[key];
 
         hasStoreSearchError = product.storeSearchEnabled !== true;
@@ -75,11 +86,12 @@ request(options, function (error, response) {
   let hasError = hasStoreSearchError;
 
   const inventory = Object.entries(skuCounter)
-    .map(([key, value]) => `${SKUS[key]}: ${value}`)
+    .map(([key, value]) => `${skuList[key]}: ${value}`)
     .join(" | ");
 
-  console.log(inventory);
-
+  console.log('\nInventory counts');
+  console.log('----------------');
+  console.log(inventory.replaceAll(" | ","\n"));
   let hasUltimate = Object.keys(skuCounter).some(
     (r) => favorites.indexOf(r) >= 0
   );
@@ -103,5 +115,5 @@ request(options, function (error, response) {
   });
 
   // Log time at end
-  console.log(new Date().toLocaleString("en-US", { timeZone }));
+  console.log(`\nGenerated: ${new Date().toLocaleString()}`);
 });

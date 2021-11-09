@@ -16,13 +16,31 @@ const SKUS = {
   'MYD92LL/A': '13" Control',
 };
 
+const SKUS_AUSTRALIA = {
+  'MKGR3X/A': '14" M1 Pro 8 Core CPU 14 Core GPU 512GB Silver',
+  'MKGP3X/A': '14" M1 Pro 8 Core CPU 14 Core GPU 512GB Space Grey',
+  'MKGT3X/A': '14" M1 Pro 10 Core CPU 16 Core GPU 1TB Silver',
+  'MKGQ3X/A': '14" M1 Pro 10 Core CPU 16 Core GPU 1TB Space Grey',
+  'MMQX3X/A': '14" M1 Max 10 Core CPU 32 Core GPU 2TB Silver, Ultimate',
+  'MKH53X/A': '14" M1 Max 10 Core CPU 32 Core GPU 2TB Space Grey, Ultimate',
+  'MK1H3X/A': '16" M1 Max 10 Core CPU 32 Core GPU 1TB Silver',
+  'MK1A3X/A': '16" M1 Max 10 Core CPU 32 Core GPU 1TB Space Grey',
+  'MMQW3X/A': '16" M1 Max 10 Core CPU 32 Core GPU 4TB Silver, Ultimate',
+  'MK233X/A': '16" M1 Max 10 Core CPU 32 Core GPU 4TB Space Grey, Ultimate',
+  'MK1F3X/A': '16" M1 Pro 10 Core CPU 16 Core GPU 1TB Silver',
+  'MK193X/A': '16" M1 Pro 10 Core CPU 16 Core GPU 1TB Space Grey',
+  'MK1E3X/A': '16" M1 Pro 10 Core CPU 16 Core GPU 512GB Silver',
+  'MK183X/A': '16" M1 Pro 10 Core CPU 16 Core GPU 512GB Space Grey',
+}
+
 const COUNTRIES = {
   US: "",
   CA: "/ca",
-  AU: "/au", // Issue with fetching australian stock
+  AU: "/au",
 };
 
 module.exports = {
   SKUS: SKUS,
+  SKUS_AUSTRALIA: SKUS_AUSTRALIA,
   COUNTRIES: COUNTRIES,
 };
