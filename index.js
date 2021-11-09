@@ -87,12 +87,11 @@ request(options, function (error, response) {
 
   const inventory = Object.entries(skuCounter)
     .map(([key, value]) => `${skuList[key]}: ${value}`)
-    .join("\n");
+    .join(" | ");
 
   console.log('\nInventory counts');
   console.log('----------------');
-  console.log(inventory);
-
+  console.log(inventory.replaceAll(" | ","\n"));
   let hasUltimate = Object.keys(skuCounter).some(
     (r) => favorites.indexOf(r) >= 0
   );
