@@ -15,6 +15,10 @@ const COUNTRIES = {
     "storePath": "/de",
     "skuCode": "D",
   },
+  UK: {
+    "storePath": "/uk",
+    "skuCode": "B",
+  },
 };
 
 module.exports = {
