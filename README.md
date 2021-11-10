@@ -27,7 +27,7 @@ $ node index.js R123 CA
 | ----------------- | ------------ |
 | United States     | US (default) |
 | Canada            | CA           |
-| Australia (*WIP*) | AU           |
+| Australia         | AU           |
 | Germany           | DE           |
 | United Kingdom    | UK           |
 
