@@ -1,34 +1,57 @@
 const request = require("request");
 const notifier = require("node-notifier");
 
-const { SKUS, SKUS_AUSTRALIA, COUNTRIES } = require("./constants");
+const { COUNTRIES } = require("./constants");
 const args = process.argv.slice(2);
 
-let favorites = ["MMQX3LL/A", "MKH53LL/A", "MK1A3LL/A", "MK1H3LL/A"];
-// Australia uses different SKUs, if passing in AU as the country code,
-// this favorites list will be used instead of the default
-let favoritesAustralia = ["MMQX3X/A","MKH53X/A","MMQW3X/A","MK233X/A"];
+let skusForCountry = (countrySkuCode) => {
+  return {
+    [`MKGR3${countrySkuCode}/A`]: `14" M1 Pro 8 Core CPU 14 Core GPU 512GB Silver`,
+    [`MKGP3${countrySkuCode}/A`]: '14" M1 Pro 8 Core CPU 14 Core GPU 512GB Space Grey',
+    [`MKGT3${countrySkuCode}/A`]: '14" M1 Pro 10 Core CPU 16 Core GPU 1TB Silver',
+    [`MKGQ3${countrySkuCode}/A`]: '14" M1 Pro 10 Core CPU 16 Core GPU 1TB Space Grey',
+    [`MMQX3${countrySkuCode}/A`]: '14" M1 Max 10 Core CPU 32 Core GPU 2TB Silver, Ultimate',
+    [`MKH53${countrySkuCode}/A`]: '14" M1 Max 10 Core CPU 32 Core GPU 2TB Space Grey, Ultimate',
+    [`MK1H3${countrySkuCode}/A`]: '16" M1 Max 10 Core CPU 32 Core GPU 1TB Silver',
+    [`MK1A3${countrySkuCode}/A`]: '16" M1 Max 10 Core CPU 32 Core GPU 1TB Space Grey',
+    [`MMQW3${countrySkuCode}/A`]: '16" M1 Max 10 Core CPU 32 Core GPU 4TB Silver, Ultimate',
+    [`MK233${countrySkuCode}/A`]: '16" M1 Max 10 Core CPU 32 Core GPU 4TB Space Grey, Ultimate',
+    [`MK1F3${countrySkuCode}/A`]: '16" M1 Pro 10 Core CPU 16 Core GPU 1TB Silver',
+    [`MK193${countrySkuCode}/A`]: '16" M1 Pro 10 Core CPU 16 Core GPU 1TB Space Grey',
+    [`MK1E3${countrySkuCode}/A`]: '16" M1 Pro 10 Core CPU 16 Core GPU 512GB Silver',
+    [`MK183${countrySkuCode}/A`]: '16" M1 Pro 10 Core CPU 16 Core GPU 512GB Space Grey',
+  }
+}
+
+let favouritesForCountry = (countrySkuCode) => {
+  return [
+    `MMQX3${countrySkuCode}/A`,
+    `MKH53${countrySkuCode}/A`,
+    `MK1A3${countrySkuCode}/A`,
+    `MK1H3${countrySkuCode}/A`,
+  ]
+}
 
 const control = "MYD92LL/A";
 let storeNumber = "R172";
 let state = "CO";
-let countryCode = "";
-let skuList = SKUS;
+let country = "US"
 
 if (args.length > 0) {
   const passedStore = args[0];
-  const passedCountry = args[1] ?? "US";
+  country = (args[1] ?? "US").toUpperCase();
   if (passedStore.charAt(0) === "R") {
     // All retail store numbers start with R
     storeNumber = passedStore;
     state = null;
   }
-  countryCode = COUNTRIES[passedCountry];
-  if (countryCode === "/au") {
-    skuList = SKUS_AUSTRALIA;
-    favorites = favoritesAustralia;
-  }
 }
+
+const countryConfig = COUNTRIES[country];
+
+let storePath = countryConfig["storePath"];
+let skuList = skusForCountry(countryConfig["skuCode"]);
+let favorites = favouritesForCountry(countryConfig["skuCode"]);
 
 const query =
   Object.keys(skuList)
@@ -37,7 +60,7 @@ const query =
 
 let options = {
   method: "GET",
-  url: `https://www.apple.com${countryCode}/shop/fulfillment-messages?` + query,
+  url: `https://www.apple.com${storePath}/shop/fulfillment-messages?` + query,
 };
 
 request(options, function (error, response) {
@@ -91,16 +114,15 @@ request(options, function (error, response) {
 
   console.log('\nInventory counts');
   console.log('----------------');
-  console.log(inventory.replaceAll(" | ","\n"));
+  console.log(inventory.replaceAll(" | ", "\n"));
   let hasUltimate = Object.keys(skuCounter).some(
     (r) => favorites.indexOf(r) >= 0
   );
   let notificationMessage;
 
   if (inventory) {
-    notificationMessage = `${
-      hasUltimate ? "FOUND ULTIMATE! " : ""
-    }Some models found: ${inventory}`;
+    notificationMessage = `${hasUltimate ? "FOUND ULTIMATE! " : ""
+      }Some models found: ${inventory}`;
   } else {
     console.log(statusArray);
     notificationMessage = "No models found.";
