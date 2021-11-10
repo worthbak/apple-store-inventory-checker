@@ -29,6 +29,7 @@ $ node index.js R123 CA
 | Canada            | CA           |
 | Australia (*WIP*) | AU           |
 | Germany           | DE           |
+| United Kingdom    | UK           |
 
 ### Polling in the background
 You might want this script to run every minute or so, to make sure you don't miss your desired model coming into stock. To run the script repeatedly, update the following line to match your local environment and add it to `crontab`. You will need to update the entry to point to the script directory on your local, your node location (use `which node`), and the desired log output file.
