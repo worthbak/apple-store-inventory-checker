@@ -1,5 +1,10 @@
 const request = require("request");
 const notifier = require("node-notifier");
+const flatMap = require('array.prototype.flatmap');
+const replaceAll = require("string.prototype.replaceall");
+
+flatMap.shim();
+replaceAll.shim();
 
 const { COUNTRIES } = require("./constants");
 const args = process.argv.slice(2);
@@ -39,7 +44,7 @@ let country = "US"
 
 if (args.length > 0) {
   const passedStore = args[0];
-  country = (args[1] ?? "US").toUpperCase();
+  country = (args[1] ? args[1] : "US").toUpperCase();
   if (passedStore.charAt(0) === "R") {
     // All retail store numbers start with R
     storeNumber = passedStore;
@@ -92,7 +97,7 @@ request(options, function (error, response) {
 
           if (product.pickupDisplay === "available") {
             console.log(`${value} in stock at ${store.storeName}`);
-            let count = skuCounter[key] ?? 0;
+            let count = skuCounter[key] ? skuCounter[key] : 0;
             count += 1;
             skuCounter[key] = count;
           }
