@@ -19,6 +19,10 @@ const COUNTRIES = {
     "storePath": "/uk",
     "skuCode": "B",
   },
+  KR: { // South Korean Apple Stores do not appear to support in-store pickup
+    "storePath": "/kr",
+    "skuCode": "KH",
+  },
 };
 
 module.exports = {

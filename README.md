@@ -30,6 +30,9 @@ $ node index.js R123 CA
 | Australia         | AU           |
 | Germany           | DE           |
 | United Kingdom    | UK           |
+| South Korea*      | KR           |
+
+\* These countries do not appear to support in-store pickup, and as such may not work with this tool.
 
 ### Polling in the background
 You might want this script to run every minute or so, to make sure you don't miss your desired model coming into stock. To run the script repeatedly, update the following line to match your local environment and add it to `crontab`. You will need to update the entry to point to the script directory on your local, your node location (use `which node`), and the desired log output file.

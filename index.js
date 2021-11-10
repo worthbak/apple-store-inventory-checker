@@ -90,7 +90,7 @@ request(options, function (error, response) {
         } else {
           productStatus.push(`${value}: ${product.pickupDisplay}`);
 
-          if (product.pickupDisplay !== "unavailable") {
+          if (product.pickupDisplay === "available") {
             console.log(`${value} in stock at ${store.storeName}`);
             let count = skuCounter[key] ?? 0;
             count += 1;
@@ -124,8 +124,9 @@ request(options, function (error, response) {
     notificationMessage = `${hasUltimate ? "FOUND ULTIMATE! " : ""
       }Some models found: ${inventory}`;
   } else {
-    console.log(statusArray);
     notificationMessage = "No models found.";
+    console.log(statusArray);
+    console.log(notificationMessage);
   }
 
   const message = hasError ? "Possible error?" : notificationMessage;
