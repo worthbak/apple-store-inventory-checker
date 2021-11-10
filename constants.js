@@ -23,6 +23,10 @@ const COUNTRIES = {
     "storePath": "/kr",
     "skuCode": "KH",
   },
+  HK: {
+    "storePath": "/hk",
+    "skuCode": "ZP",
+  },
 };
 
 module.exports = {

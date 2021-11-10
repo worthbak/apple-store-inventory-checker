@@ -31,6 +31,7 @@ $ node index.js R123 CA
 | Germany           | DE           |
 | United Kingdom    | UK           |
 | South Korea*      | KR           |
+| Hong Kong         | HK           |
 
 \* These countries do not appear to support in-store pickup, and as such may not work with this tool.
 
