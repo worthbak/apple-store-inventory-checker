@@ -27,7 +27,7 @@ $ node index.js R123 CA
 | ----------------- | ------------ |
 | United States     | US (default) |
 | Canada            | CA           |
-| Australia (*WIP*) | AU           |
+| Australia         | AU           |
 
 ### Polling in the background
 You might want this script to run every minute or so, to make sure you don't miss your desired model coming into stock. To run the script repeatedly, update the following line to match your local environment and add it to `crontab`. You will need to update the entry to point to the script directory on your local, your node location (use `which node`), and the desired log output file.
@@ -37,6 +37,13 @@ You might want this script to run every minute or so, to make sure you don't mis
 
 ### Customization 
 This script checks for most known MacBook Pro variants that are currently stocked by Apple Stores, and has some special logic for my personal favorite model (14" M1 Max 32 Core GPU, 64GB RAM, 2TB SSD in both Silver and Space Gray). You may want to tweak the code if you're not interested in the "Ultimate" models.
+
+### Check iPhone 13 stock
+This script can also check iPhone 13 stock if passed the argument "IPHONE"
+```
+$ node index.js R582 US IPHONE
+$ node index.js R384 AU IPHONE
+```
 
 ### Apple Store Query URL Pattern
 For reference, here's how Apple's fulfillment API works.
