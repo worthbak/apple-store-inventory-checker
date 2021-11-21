@@ -9,7 +9,9 @@
   "author": "worth baker",
   "license": "ISC",
   "dependencies": {
+    "array.prototype.flatmap": "^1.2.5",
     "node-notifier": "^10.0.0",
-    "request": "^2.88.2"
+    "request": "^2.88.2",
+    "string.prototype.replaceall": "^1.0.6"
   }
 }
