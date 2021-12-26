@@ -1,6 +1,9 @@
 # apple-store-inventory-checker
 Checks Apple Store inventory for new MacBook Pro models.
 
+### Now available as a macOS app!
+This script's functionality is now available as a macOS app! Read more here: [InventoryWatch App by @worthbak](https://worthbak.github.io/inventory-checker-app/)
+
 ### Installation 
 Run `npm install` to load the project's dependencies. Assumes recent `node` version (tested with `v17.0.1`, but should work with earlier versions).
 * `request` for simplifying network requests
